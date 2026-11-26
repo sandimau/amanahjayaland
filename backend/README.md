@@ -1,13 +1,13 @@
 # Backend Amanah Jaya Land
 
-Website publik menggunakan **desain asli** yang sudah tersedia dalam `public/original-design/*-standalone.html` beserta aset di `public/original-assets/`, bukan Blade baru. Semua berkas yang diperlukan untuk menjalankan website sudah ada di folder `backend/`. File HTML sumber yang besar dan skrip ekstraksi di folder induk hanya tersedia di komputer pengembangan, **tidak disertakan dalam repository**. Gambar besar menggunakan varian WebP bila ukurannya lebih kecil. Laravel menyediakan API serta halaman admin berbasis Blade.
+Website publik menggunakan **desain asli** yang sudah tersedia dalam `public/original-design/*-standalone.html` beserta aset di `public/original-assets/`, bukan Blade baru. Seluruh aplikasi Laravel berada langsung di **root repository** setelah di-clone. File HTML sumber yang besar dan skrip ekstraksi di luar aplikasi ini hanya tersedia di komputer pengembangan, **tidak disertakan dalam repository**. Gambar besar menggunakan varian WebP bila ukurannya lebih kecil. Laravel menyediakan API serta halaman admin berbasis Blade.
 
 ## Menjalankan lokal
 
 Prasyarat: PHP 8.4 (tersedia pada mesin ini), Composer, ekstensi SQLite (`pdo_sqlite`) dan `fileinfo`.
 
 ```powershell
-cd backend
+cd amanahjayaland
 composer install
 Copy-Item .env.example .env # hanya bila .env belum ada
 php artisan key:generate # hanya untuk .env baru
