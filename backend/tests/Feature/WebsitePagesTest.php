@@ -51,6 +51,24 @@ class WebsitePagesTest extends TestCase
         $this->get('/admin')->assertRedirect('/login');
     }
 
+    public function test_new_project_slug_is_generated_from_name_and_stays_unique(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $this->get('/admin/proyek/baru')->assertOk()->assertSee('Slug URL (otomatis)')
+            ->assertDontSee('name="slug"', false);
+
+        $this->post('/admin/proyek', ['name' => 'Rumah Asri & Nyaman'])->assertRedirect();
+        $this->post('/admin/proyek', ['name' => 'Rumah Asri & Nyaman', 'slug' => 'slug-dari-klien'])->assertRedirect();
+        $this->assertDatabaseHas('projects', ['name' => 'Rumah Asri & Nyaman', 'slug' => 'rumah-asri-nyaman']);
+        $this->assertDatabaseHas('projects', ['name' => 'Rumah Asri & Nyaman', 'slug' => 'rumah-asri-nyaman-2']);
+
+        $project = Project::where('slug', 'rumah-asri-nyaman')->firstOrFail();
+        $this->put(route('admin.projects.update', $project), [
+            'name' => 'Nama Baru', 'slug' => $project->slug,
+        ])->assertRedirect();
+        $this->assertSame('rumah-asri-nyaman', $project->fresh()->slug);
+    }
+
     public function test_admin_can_upload_project_and_gallery_images(): void
     {
         Storage::fake('public');

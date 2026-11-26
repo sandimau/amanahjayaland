@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
@@ -30,6 +31,13 @@ class AdminController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $data = $this->validated($request);
+        $baseSlug = trim(Str::limit(Str::slug($data['name']) ?: 'proyek', 240, ''), '-');
+        $slug = $baseSlug;
+        $suffix = 2;
+        while (Project::where('slug', $slug)->exists()) {
+            $slug = $baseSlug.'-'.$suffix++;
+        }
+        $data['slug'] = $slug;
         $data['is_published'] = $request->boolean('is_published');
         if ($request->hasFile('cover_image')) {
             $data['cover_image'] = $request->file('cover_image')->store('projects', 'public');
@@ -109,13 +117,17 @@ class AdminController extends Controller
 
     private function validated(Request $request, ?Project $project = null): array
     {
-        return $request->validate([
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'alpha_dash', 'max:255', Rule::unique('projects')->ignore($project?->id)],
             'summary' => ['nullable', 'string', 'max:2000'],
             'description' => ['nullable', 'string'],
             'location' => ['nullable', 'string', 'max:255'],
             'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
-        ]);
+        ];
+        if ($project) {
+            $rules['slug'] = ['required', 'string', 'alpha_dash', 'max:255', Rule::unique('projects')->ignore($project->id)];
+        }
+
+        return $request->validate($rules);
     }
 }
