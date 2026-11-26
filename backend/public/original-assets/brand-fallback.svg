@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="270" height="44" viewBox="0 0 270 44" role="img" aria-label="Amanah Jaya Land">
+  <path d="M3 21 22 3l19 18" fill="none" stroke="#f6c40e" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M9 18v22h26V18M16 40V27h12v13" fill="none" stroke="#f6c40e" stroke-width="3" stroke-linejoin="round"/>
+  <text x="52" y="20" fill="#fff" font-family="Montserrat,Segoe UI,sans-serif" font-size="15" font-weight="700" letter-spacing="1">AMANAH JAYA</text>
+  <text x="52" y="37" fill="#f6c40e" font-family="Montserrat,Segoe UI,sans-serif" font-size="11" font-weight="700" letter-spacing="4">LAND</text>
+</svg>

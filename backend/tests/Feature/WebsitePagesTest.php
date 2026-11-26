@@ -15,6 +15,7 @@ class WebsitePagesTest extends TestCase
 
     public function test_original_design_pages_are_served(): void
     {
+        $this->assertFileExists(public_path('original-assets/brand-fallback.svg'));
         Project::create(['name' => 'Proyek Terbit', 'slug' => 'proyek-terbit', 'is_published' => true]);
         Project::create(['name' => 'Proyek Draf', 'slug' => 'proyek-draf']);
 
