@@ -22,10 +22,14 @@ Route::post('/contact', [ContactController::class, 'store'])->middleware('thrott
 Route::post('/admin/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
 Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::apiResource('projects', AdminProjectController::class);
-    Route::post('/gallery', [AdminGalleryController::class, 'store']);
-    Route::delete('/gallery/{image}', [AdminGalleryController::class, 'destroy']);
-    Route::get('/messages', [MessageController::class, 'index']);
-    Route::get('/messages/{message}', [MessageController::class, 'show']);
-    Route::delete('/messages/{message}', [MessageController::class, 'destroy']);
+    Route::middleware('admin.access:projects')->group(function () {
+        Route::apiResource('projects', AdminProjectController::class);
+        Route::post('/gallery', [AdminGalleryController::class, 'store']);
+        Route::delete('/gallery/{image}', [AdminGalleryController::class, 'destroy']);
+    });
+    Route::middleware('admin.access:messages')->group(function () {
+        Route::get('/messages', [MessageController::class, 'index']);
+        Route::get('/messages/{message}', [MessageController::class, 'show']);
+        Route::delete('/messages/{message}', [MessageController::class, 'destroy']);
+    });
 });

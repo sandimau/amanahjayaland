@@ -1428,7 +1428,7 @@ class Component extends DCLogic {
       { label: 'Facebook', paths: ['M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z'] }
     ];
     var social = socials.map(function (s) {
-      return h('a', { key: s.label, href: '#kontak', className: 'social-link', 'aria-label': 'Amanah Jaya Land di ' + s.label }, icon(s.paths));
+      return h('a', { key: s.label, href: 'https://example.com/amanah-jaya-land/' + s.label.toLowerCase(), className: 'social-link', 'aria-label': 'Amanah Jaya Land di ' + s.label, target: '_blank', rel: 'noopener noreferrer' }, icon(s.paths));
     });
 
     // Portofolio: projects 1-4 as on Home; 5-8 are sample entries (replace with real projects)

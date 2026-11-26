@@ -12,6 +12,37 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public const MENUS = [
+        'projects' => 'Proyek',
+        'content' => 'Konten Website',
+        'settings' => 'Pengaturan',
+        'users' => 'User',
+        'messages' => 'Pesan',
+    ];
+
+    public const MENU_ROUTES = [
+        'projects' => 'admin.index',
+        'content' => 'admin.content.index',
+        'settings' => 'admin.settings.edit',
+        'users' => 'admin.users.index',
+        'messages' => 'admin.messages.index',
+    ];
+
+    public function canAccessMenu(string $menu): bool
+    {
+        return array_key_exists($menu, self::MENUS)
+            && ($this->menu_permissions === null || in_array($menu, $this->menu_permissions, true));
+    }
+
+    public function adminHomeRoute(): string
+    {
+        foreach (self::MENU_ROUTES as $menu => $route) {
+            if ($this->canAccessMenu($menu)) return $route;
+        }
+
+        return 'home';
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +52,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'menu_permissions',
     ];
 
     /**
@@ -40,5 +72,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'menu_permissions' => 'array',
     ];
 }

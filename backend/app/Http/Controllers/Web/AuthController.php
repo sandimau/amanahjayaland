@@ -26,7 +26,7 @@ class AuthController extends Controller
 
         $request->session()->forget('url.intended');
 
-        return redirect()->route('admin.index');
+        return redirect()->route($request->user()->adminHomeRoute());
     }
 
     public function destroy(Request $request): RedirectResponse

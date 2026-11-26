@@ -4,6 +4,7 @@ use App\Http\Controllers\Web\AdminController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\SiteContentController;
 use App\Http\Controllers\Web\SiteSettingController;
+use App\Http\Controllers\Web\UserController;
 use App\Models\Project;
 use Illuminate\Support\Facades\Route;
 
@@ -37,23 +38,38 @@ Route::withoutMiddleware([
 Route::get('/login', [AuthController::class, 'create'])->middleware('guest')->name('login');
 Route::post('/login', [AuthController::class, 'store'])->middleware(['guest', 'throttle:5,1'])->name('login.store');
 Route::post('/logout', [AuthController::class, 'destroy'])->middleware('auth')->name('logout');
-Route::get('/home', fn () => redirect()->route('admin.index'))->middleware('auth');
+Route::get('/home', fn () => redirect()->route(auth()->user()->adminHomeRoute()))->middleware('auth');
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
-    Route::get('/', [AdminController::class, 'index'])->name('index');
-    Route::get('/konten', [SiteContentController::class, 'index'])->name('content.index');
-    Route::post('/konten', [SiteContentController::class, 'store'])->name('content.store');
-    Route::post('/konten/gambar', [SiteContentController::class, 'upload'])->name('content.upload');
-    Route::delete('/konten/{content}', [SiteContentController::class, 'destroy'])->name('content.destroy');
-    Route::get('/pengaturan', [SiteSettingController::class, 'edit'])->name('settings.edit');
-    Route::put('/pengaturan', [SiteSettingController::class, 'update'])->name('settings.update');
-    Route::get('/proyek/baru', [AdminController::class, 'create'])->name('projects.create');
-    Route::post('/proyek', [AdminController::class, 'store'])->name('projects.store');
-    Route::get('/proyek/{project}/edit', [AdminController::class, 'edit'])->name('projects.edit');
-    Route::put('/proyek/{project}', [AdminController::class, 'update'])->name('projects.update');
-    Route::delete('/proyek/{project}', [AdminController::class, 'destroy'])->name('projects.destroy');
-    Route::post('/proyek/{project}/foto', [AdminController::class, 'addImage'])->name('images.store');
-    Route::delete('/foto/{image}', [AdminController::class, 'removeImage'])->name('images.destroy');
-    Route::get('/pesan', [AdminController::class, 'messages'])->name('messages.index');
-    Route::delete('/pesan/{message}', [AdminController::class, 'deleteMessage'])->name('messages.destroy');
+    Route::middleware('admin.access:projects')->group(function () {
+        Route::get('/', [AdminController::class, 'index'])->name('index');
+        Route::get('/proyek/baru', [AdminController::class, 'create'])->name('projects.create');
+        Route::post('/proyek', [AdminController::class, 'store'])->name('projects.store');
+        Route::get('/proyek/{project}/edit', [AdminController::class, 'edit'])->name('projects.edit');
+        Route::put('/proyek/{project}', [AdminController::class, 'update'])->name('projects.update');
+        Route::delete('/proyek/{project}', [AdminController::class, 'destroy'])->name('projects.destroy');
+        Route::post('/proyek/{project}/foto', [AdminController::class, 'addImage'])->name('images.store');
+        Route::delete('/foto/{image}', [AdminController::class, 'removeImage'])->name('images.destroy');
+    });
+    Route::middleware('admin.access:content')->group(function () {
+        Route::get('/konten', [SiteContentController::class, 'index'])->name('content.index');
+        Route::post('/konten', [SiteContentController::class, 'store'])->name('content.store');
+        Route::post('/konten/gambar', [SiteContentController::class, 'upload'])->name('content.upload');
+        Route::delete('/konten/{content}', [SiteContentController::class, 'destroy'])->name('content.destroy');
+    });
+    Route::middleware('admin.access:settings')->group(function () {
+        Route::get('/pengaturan', [SiteSettingController::class, 'edit'])->name('settings.edit');
+        Route::put('/pengaturan', [SiteSettingController::class, 'update'])->name('settings.update');
+    });
+    Route::middleware('admin.access:users')->group(function () {
+        Route::get('/pengguna', [UserController::class, 'index'])->name('users.index');
+        Route::get('/pengguna/baru', [UserController::class, 'create'])->name('users.create');
+        Route::post('/pengguna', [UserController::class, 'store'])->name('users.store');
+        Route::get('/pengguna/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/pengguna/{user}', [UserController::class, 'update'])->name('users.update');
+    });
+    Route::middleware('admin.access:messages')->group(function () {
+        Route::get('/pesan', [AdminController::class, 'messages'])->name('messages.index');
+        Route::delete('/pesan/{message}', [AdminController::class, 'deleteMessage'])->name('messages.destroy');
+    });
 });
