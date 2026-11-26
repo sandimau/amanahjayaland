@@ -1,5 +1,19 @@
 /* Navigation and data bridge for the original exported Design Canvas pages. */
 (() => {
+    // The source export references an absent /_blob logo. Keep the brand visible
+    // until an administrator replaces it with the original image in the CMS.
+    const restoreBrand = () => {
+        document.querySelectorAll('.ajl-nav__brand img, .ajl-footer__logo').forEach((image) => {
+            if (image.getAttribute('src') === '/original-assets/unavailable.svg') {
+                image.src = '/original-assets/brand-fallback.svg';
+            }
+        });
+    };
+    restoreBrand();
+    new MutationObserver(restoreBrand).observe(document.documentElement, {
+        subtree: true, childList: true, attributes: true, attributeFilter: ['src'],
+    });
+
     const pages = {
         'Main.dc.html': '/',
         'Tentang.dc.html': '/tentang-kami',
