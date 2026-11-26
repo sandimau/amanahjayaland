@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 72" width="64" height="72">
+  <defs>
+    <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffcf3a"></stop>
+      <stop offset="1" stop-color="#f0a20a"></stop>
+    </linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd970"></stop>
+      <stop offset="1" stop-color="#f3b52a"></stop>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"></stop>
+      <stop offset="1" stop-color="#dfe9f6"></stop>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a72d4"></stop>
+      <stop offset="1" stop-color="#1650b0"></stop>
+    </linearGradient>
+  </defs>
+  
+  <rect x="34" y="14" width="25" height="22" rx="1.5" fill="url(#wall)"></rect>
+  <rect x="52" y="5" width="4.5" height="9" fill="#f0a20a"></rect>
+  <path d="M27 17.5 44 3.5 61 17.5" fill="none" stroke="url(#roof)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"></path>
+  <rect x="38" y="19" width="5" height="6" rx="0.8" fill="#7a4a12" opacity="0.55"></rect>
+  
+  <g transform="translate(-1 2) rotate(-8 29 44)">
+    <rect x="5.5" y="21" width="47" height="49" rx="8" fill="#0b2a5c" opacity="0.35"></rect>
+    <rect x="4" y="18" width="47" height="49" rx="8" fill="url(#body)" stroke="#c7d8ee" stroke-width="1.2"></rect>
+    <rect x="8.5" y="22.5" width="38" height="40" rx="5" fill="url(#panel)"></rect>
+    <rect x="11.5" y="25.5" width="32" height="8" rx="1.6" fill="#c9daee"></rect>
+    <g fill="#eef4fc">
+      <rect x="12" y="37" width="8.4" height="5.6" rx="1.2"></rect>
+      <rect x="23.3" y="37" width="8.4" height="5.6" rx="1.2"></rect>
+      <rect x="34.6" y="37" width="8.4" height="5.6" rx="1.2"></rect>
+      <rect x="12" y="45.2" width="8.4" height="5.6" rx="1.2"></rect>
+      <rect x="23.3" y="45.2" width="8.4" height="5.6" rx="1.2"></rect>
+      <rect x="34.6" y="45.2" width="8.4" height="5.6" rx="1.2"></rect>
+      <rect x="12" y="53.4" width="8.4" height="5.6" rx="1.2"></rect>
+    </g>
+    <rect x="23.3" y="53.4" width="8.4" height="5.6" rx="1.2" fill="#3aa6f0"></rect>
+    <rect x="34.6" y="53.4" width="8.4" height="5.6" rx="1.2" fill="#f7c531"></rect>
+  </g>
+</svg>
